@@ -3,7 +3,7 @@ import { Card, Col, Row, List, Typography } from 'antd';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 export const UserOverview: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
-  const { point1, createdAt, isPlay, locked, phone } = useSelector(s => s.user);
+  const { point1, phone } = useSelector(s => s.user);
   const { loading } = useSelector(s => s.global);
 
   return (
@@ -21,18 +21,18 @@ export const UserOverview: React.FC<React.HTMLAttributes<HTMLDivElement>> = () =
               <Row justify="space-between">
                 <Col>
                   <Typography.Text strong style={{ fontSize: 16 }}>
-                    Xu còn lại
+                    KTCoin
                   </Typography.Text>
                 </Col>
                 <Col>
-                  <Typography.Text type="warning" strong style={{ fontSize: 24, color: 'red' }}>
+                  <Typography.Text type="warning" strong style={{ fontSize: 16, color: 'red' }}>
                     {point1}
                   </Typography.Text>
                 </Col>
               </Row>
             </Card>
           </Col>
-          <Col md={12} lg={8} xl={8} xxl={6} sm={24} xs={24}>
+          {/* <Col md={12} lg={8} xl={8} xxl={6} sm={24} xs={24}>
             <Card loading={loading}>
               <Row justify="space-between">
                 <Col>
@@ -47,8 +47,8 @@ export const UserOverview: React.FC<React.HTMLAttributes<HTMLDivElement>> = () =
                 </Col>
               </Row>
             </Card>
-          </Col>
-          <Col md={12} lg={8} xl={8} xxl={6} sm={24} xs={24}>
+          </Col> */}
+          {/* <Col md={12} lg={8} xl={8} xxl={6} sm={24} xs={24}>
             <Card loading={loading}>
               <Row justify="space-between">
                 <Col>
@@ -63,8 +63,8 @@ export const UserOverview: React.FC<React.HTMLAttributes<HTMLDivElement>> = () =
                 </Col>
               </Row>
             </Card>
-          </Col>
-          <Col md={12} lg={8} xl={8} xxl={6} sm={24} xs={24}>
+          </Col> */}
+          {/* <Col md={12} lg={8} xl={8} xxl={6} sm={24} xs={24}>
             <Card loading={loading}>
               <Row justify="space-between">
                 <Col>
@@ -79,7 +79,7 @@ export const UserOverview: React.FC<React.HTMLAttributes<HTMLDivElement>> = () =
                 </Col>
               </Row>
             </Card>
-          </Col>
+          </Col> */}
           <Col md={12} lg={8} xl={8} xxl={6} sm={24} xs={24}>
             <Card
               style={{
@@ -108,36 +108,8 @@ export const UserOverview: React.FC<React.HTMLAttributes<HTMLDivElement>> = () =
         <List bordered style={{ background: '#fff' }}>
           <List.Item>
             <Typography.Text>
-              <Link title="Đổi mật khẩu game" to="/user/change-password">
-                Đổi mật khẩu game
-              </Link>
-            </Typography.Text>
-          </List.Item>
-          <List.Item>
-            <Typography.Text>
-              <Link title="Đổi mật khẩu game" to="/user/change-phone">
-                Đổi số điện thoại
-              </Link>
-            </Typography.Text>
-          </List.Item>
-          <List.Item>
-            <Typography.Text>
-              <Link title="Đổi mật khẩu game" to="/user/change-sec-password">
-                Đổi mật khẩu cấp 2
-              </Link>
-            </Typography.Text>
-          </List.Item>
-          <List.Item>
-            <Typography.Text>
-              <Link title="Đổi mật khẩu game" to="/user/change-secret-questions">
-                Đổi câu hỏi bí mật
-              </Link>
-            </Typography.Text>
-          </List.Item>
-          <List.Item>
-            <Typography.Text>
-              <Link title="Đổi mật khẩu game" to="/user/unlock-equipment">
-                Mở khoá trang bị
+              <Link title="Đổi mật khẩu" to="/user/change-password">
+                Đổi mật khẩu
               </Link>
             </Typography.Text>
           </List.Item>

@@ -38,40 +38,13 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
         await di.user.logout();
         dispatch(logoutAsync());
         navigate('/login');
-        // window.location.reload();
 
         return;
     }
   };
 
-  // const toLogin = () => {
-  //   navigate('/login');
-  // };
-
-  // const selectLocale = ({ key }: { key: any }) => {
-  //   dispatch(setUserItem({ locale: key }));
-  //   localStorage.setItem('locale', key);
-  // };
-
-  // const onChangeTheme = () => {
-  //   const newTheme = theme === 'dark' ? 'light' : 'dark';
-
-  //   localStorage.setItem('theme', newTheme);
-  //   dispatch(
-  //     setGlobalState({
-  //       theme: newTheme,
-  //     }),
-  //   );
-  // };
-
   return (
     <Header className="layout-page-header bg-2" style={{ backgroundColor: token.token.colorBgContainer }}>
-      {/* {device !== 'MOBILE' && ( */}
-      {/* <div className="logo" style={{ width: collapsed ? 80 : 200 }}>
-        <img src={ReactSvg} alt="" style={{ marginRight: collapsed ? '2px' : '20px' }} />
-        <img src={AntdSvg} alt="" />
-      </div> */}
-      {/* )} */}
       <div className="layout-page-header-main">
         <div onClick={toggle}>
           <span id="sidebar-trigger">{collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}</span>
@@ -89,29 +62,6 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
             </span>
           </Tooltip> */}
           {/* <HeaderNoticeComponent /> */}
-          {/* <Dropdown
-            menu={{
-              onClick: info => selectLocale(info),
-              items: [
-                {
-                  key: 'zh_CN',
-                  icon: <ZhCnSvg />,
-                  disabled: locale === 'zh_CN',
-                  label: '简体中文',
-                },
-                {
-                  key: 'en_US',
-                  icon: <EnUsSvg />,
-                  disabled: locale === 'en_US',
-                  label: 'English',
-                },
-              ],
-            }}
-          >
-            <span>
-              <LanguageSvg id="language-change" />
-            </span>
-          </Dropdown> */}
 
           {logged ? (
             <Dropdown

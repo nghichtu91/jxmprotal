@@ -13,7 +13,7 @@ const DashBoardPage: FC = () => {
 
   if (role !== 'GUEST') {
     return (
-      <Row gutter={[8, 8]} justify="center" className="mt">
+      <Row justify="center" className="mt">
         <Col xs={23} sm={23} md={23}>
           <Overview loading={loading} />
         </Col>

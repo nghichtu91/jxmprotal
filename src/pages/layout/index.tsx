@@ -196,7 +196,7 @@ const LayoutPage: FC = () => {
             {!loading && newUser && location.pathname !== '/user/change-info' && (
               <Row justify="center" className="new-user">
                 <Col sm={23} xs={23} md={9}>
-                  <Alert
+                  {/* <Alert
                     type="warning"
                     message={
                       <Typography.Text>
@@ -204,7 +204,7 @@ const LayoutPage: FC = () => {
                         <Typography.Link href="/user/change-info">Bấm vào đây để cập nhật.</Typography.Link>
                       </Typography.Text>
                     }
-                  />
+                  /> */}
                 </Col>
               </Row>
             )}

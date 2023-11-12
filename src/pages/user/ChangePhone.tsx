@@ -71,33 +71,31 @@ const ChangePhoneNumberPage: FC = () => {
 
   return (
     <Inner>
-      {!newUser && (
-        <Card title="Đổi số điện thoại">
-          <Form security="232323" layout="vertical" onFinish={onFinish} labelAlign="right" className="genaral-form">
-            <Form.Item
-              label={<Typography.Text strong>Số điện thoại mới</Typography.Text>}
-              name="newPhone"
-              rules={[
-                { required: true, message: 'Vui lòng nhập số điện thoại mới.' },
-                {
-                  pattern: PHONE_PATTERN,
-                  message: 'Vui lòng nhập số điện di động mới.',
-                },
-              ]}
-            >
-              <Input placeholder="Nhập số điện thoại mới" />
-            </Form.Item>
-            <FieldsCheck />
-            <Row justify="center">
-              <Col>
-                <Button loading={loading} htmlType="submit" type="primary">
-                  Cập nhật
-                </Button>
-              </Col>
-            </Row>
-          </Form>
-        </Card>
-      )}
+      <Card title="Đổi số điện thoại">
+        <Form security="232323" layout="vertical" onFinish={onFinish} labelAlign="right" className="genaral-form">
+          <Form.Item
+            label={<Typography.Text strong>Số điện thoại mới</Typography.Text>}
+            name="newPhone"
+            rules={[
+              { required: true, message: 'Vui lòng nhập số điện thoại mới.' },
+              {
+                pattern: PHONE_PATTERN,
+                message: 'Vui lòng nhập số điện di động mới.',
+              },
+            ]}
+          >
+            <Input placeholder="Nhập số điện thoại mới" />
+          </Form.Item>
+          <FieldsCheck />
+          <Row justify="center">
+            <Col>
+              <Button loading={loading} htmlType="submit" type="primary">
+                Cập nhật
+              </Button>
+            </Col>
+          </Row>
+        </Form>
+      </Card>
     </Inner>
   );
 };

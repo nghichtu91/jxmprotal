@@ -21,7 +21,9 @@ export type IUserChangeSecPassword = {
 export type IUserChangePassword = {
   confirmNewPassword: string;
   passWord?: string;
-} & FiledsCheck;
+  oldPassWord?: string;
+  newPassWord?: string;
+};
 
 export type IUserChangePhone = {
   newPhone?: string;
