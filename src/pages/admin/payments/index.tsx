@@ -20,12 +20,6 @@ dayjs.extend(weekYear);
 
 const Columns: ColumnsType<IPaymentEntity> = [
   {
-    title: 'Id',
-    dataIndex: 'id',
-    align: 'center',
-    width: '75px',
-  },
-  {
     title: 'Tài khoản',
     dataIndex: 'userName',
     align: 'center',
@@ -37,36 +31,6 @@ const Columns: ColumnsType<IPaymentEntity> = [
     ),
   },
   {
-    title: 'Seri',
-    dataIndex: 'seri',
-    align: 'center',
-    width: '150px',
-  },
-  {
-    title: 'Mã thẻ',
-    dataIndex: 'pin',
-    align: 'center',
-    width: '150px',
-  },
-  {
-    title: 'Loại thẻ',
-    dataIndex: 'cardType',
-    align: 'center',
-  },
-  // {
-  //   title: 'Hình thức',
-  //   dataIndex: 'gateway',
-  //   align: 'center',
-  //   render: value => {
-  //     switch (value) {
-  //       case 'atm':
-  //         return <Typography.Text strong>Ngân hàng</Typography.Text>;
-  //       default:
-  //         return <Typography.Text strong>Thẻ cào</Typography.Text>;
-  //     }
-  //   },
-  // },
-  {
     title: 'Số tiền nạp',
     dataIndex: 'value',
     align: 'center',
@@ -74,7 +38,7 @@ const Columns: ColumnsType<IPaymentEntity> = [
     width: '150px',
   },
   {
-    title: 'Xu nhận được',
+    title: 'Ktcoin',
     dataIndex: 'coin',
     align: 'center',
     width: '120px',
@@ -106,7 +70,7 @@ const AdminPayments = () => {
   const defaultPaged = (searchParams.get('paged') as unknown as string) || '1';
   const [paged, setPaged] = useState<number>(parseInt(defaultPaged));
   const [total, setTotal] = useState<number>(0);
-  const defautlStatus = searchParams.get('status') ? parseInt(searchParams.get('status') || '') : undefined;
+  const defautlStatus = searchParams.get('status') ? parseInt(searchParams.get('status') || '') : 0;
 
   const initialValues: ISearchForm = {
     keyword: searchParams.get('keyword') || undefined,
@@ -144,6 +108,7 @@ const AdminPayments = () => {
     fetchPayments(paged, keyword || undefined, {
       form: searchParams.get('form') || '',
       to: searchParams.get('to') || '',
+      status: defautlStatus,
     });
   }, [fetchPayments]);
 
@@ -180,14 +145,36 @@ const AdminPayments = () => {
     });
   };
 
+  Columns[1] = {
+    title: 'Thông tin',
+    render: ({ seri, pin, cardType, gateway }: IPaymentEntity) => {
+      switch (gateway) {
+        case 'banking':
+          return (
+            <>
+              <span>Số tài khoản: {seri}, </span>
+            </>
+          );
+        default:
+          return (
+            <>
+              <span>
+                Seri: {seri}, mã thẻ: {pin}, type: {cardType}
+              </span>
+            </>
+          );
+      }
+    },
+  };
+
   return (
     <Row justify="center" className="mt">
-      <Col md={20}>
+      <Col md={23}>
         <Table
           title={() => (
-            <Form onFinish={onSearch} form={form} initialValues={initialValues} size="large" layout="inline">
+            <Form onFinish={onSearch} form={form} initialValues={initialValues} layout="inline">
               <Form.Item name="keyword">
-                <Input size="large" placeholder="Tài khoản" />
+                <Input placeholder="Tài khoản" />
               </Form.Item>
               <Form.Item name="status">
                 <Select
@@ -209,7 +196,7 @@ const AdminPayments = () => {
                     },
                     {
                       label: 'Đợi duyệt',
-                      value: 99,
+                      value: 0,
                     },
                   ]}
                 />

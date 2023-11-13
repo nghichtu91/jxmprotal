@@ -47,7 +47,7 @@ interface ISearchUsers {
 
 const Columns: ColumnsType<IUserEntity> = [
   {
-    title: 'Id',
+    title: 'ID tài khoản',
     dataIndex: 'id',
     align: 'center',
     width: '170px',
@@ -67,13 +67,14 @@ const Columns: ColumnsType<IUserEntity> = [
     title: 'Số điện thoại',
     dataIndex: 'phone',
     align: 'center',
+    width: '170px',
   },
-  {
-    title: 'Ngày tạo',
-    align: 'center',
-    dataIndex: 'createdAt',
-    render: createdAt => <Typography.Text>{createdAt ? createdAt : 'Không xác định'}</Typography.Text>,
-  },
+  // {
+  //   title: 'Ngày tạo',
+  //   align: 'center',
+  //   dataIndex: 'createdAt',
+  //   render: createdAt => <Typography.Text>{createdAt ? createdAt : 'Không xác định'}</Typography.Text>,
+  // },
 
   {
     align: 'center',
@@ -301,7 +302,7 @@ const AdminUsersPage: FC = () => {
     setUserUpdate(item);
   };
 
-  Columns[5] = {
+  Columns[4] = {
     width: '170px',
     align: 'center',
     render: (item: IUserEntity) => (
@@ -317,16 +318,16 @@ const AdminUsersPage: FC = () => {
         >
           <PayCircleOutlined style={{ fontSize: 20 }} />
         </Typography.Link>
-        <Typography.Link
+        {/* <Typography.Link
           onClick={() => confirmLockOrUnlockAcount(item)}
           style={{ fontSize: 20 }}
           title={!item.locked ? 'khoá tài khoản' : 'Mở khoá tài khoản'}
           type={!item.locked ? 'success' : 'danger'}
         >
           {item.locked ? <LockOutlined /> : <UnlockFilled />}
-        </Typography.Link>
+        </Typography.Link> */}
 
-        <Typography.Link
+        {/* <Typography.Link
           // disabled={!!item.isNew}
           onClick={() => updateAcount(item)}
           style={{ fontSize: 20 }}
@@ -334,7 +335,7 @@ const AdminUsersPage: FC = () => {
           type="warning"
         >
           <UndoOutlined />
-        </Typography.Link>
+        </Typography.Link> */}
       </Space>
     ),
   };
@@ -399,7 +400,7 @@ const AdminUsersPage: FC = () => {
   return (
     <React.Fragment>
       <Row justify="center" className="mt">
-        <Col md={20} className="mt">
+        <Col md={24} className="mt">
           <Table
             title={() => (
               <Form
@@ -412,9 +413,9 @@ const AdminUsersPage: FC = () => {
                 <Form.Item name="keyword">
                   <Input allowClear={true} placeholder="Tài khoản" />
                 </Form.Item>
-                <Form.Item name="createAt">
+                {/* <Form.Item name="createAt">
                   <DatePicker.RangePicker allowClear={true} size="large" placeholder={['Từ ngày', 'Đến ngày']} />
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item>
                   <Button type="primary" htmlType="submit">
                     Tìm kiếm
