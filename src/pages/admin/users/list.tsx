@@ -12,20 +12,12 @@ import {
   InputNumber,
   Button,
   notification,
-  DatePicker,
 } from 'antd';
 import './index.less';
 import type { ColumnsType } from 'antd/es/table';
 import di from '@/di';
 import { IUserEntity } from '@/domains/entities/interfaces';
-import {
-  PayCircleOutlined,
-  InfoCircleOutlined,
-  CheckCircleOutlined,
-  LockOutlined,
-  UnlockFilled,
-  UndoOutlined,
-} from '@ant-design/icons';
+import { PayCircleOutlined, InfoCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { CURRENCY_GAME, SECRET_QUESTIONS } from '@/constants';
 import { IAddXuDTO, IUnlockOrLock } from '@/domains/dto';
 import { useSearchParams } from 'react-router-dom';
@@ -46,12 +38,12 @@ interface ISearchUsers {
 }
 
 const Columns: ColumnsType<IUserEntity> = [
-  {
-    title: 'ID tài khoản',
-    dataIndex: 'id',
-    align: 'center',
-    width: '170px',
-  },
+  // {
+  //   title: 'ID tài khoản',
+  //   dataIndex: 'id',
+  //   align: 'center',
+  //   width: '170px',
+  // },
   {
     title: 'Tài khoản',
     dataIndex: 'userName',
@@ -62,6 +54,7 @@ const Columns: ColumnsType<IUserEntity> = [
     title: CURRENCY_GAME,
     dataIndex: 'point1',
     align: 'center',
+    width: '170px',
   },
   {
     title: 'Số điện thoại',
@@ -75,7 +68,6 @@ const Columns: ColumnsType<IUserEntity> = [
   //   dataIndex: 'createdAt',
   //   render: createdAt => <Typography.Text>{createdAt ? createdAt : 'Không xác định'}</Typography.Text>,
   // },
-
   {
     align: 'center',
     width: '270px',
@@ -94,10 +86,10 @@ const AdminUsersPage: FC = () => {
   const [userName, setUserName] = useState<string>();
   const [isLoading, setIsLoading] = useState<boolean>();
 
-  const [userUnlockOrLock, setUserUnlockOrLock] = useState<IUserEntity>();
+  const [userUnlockOrLock] = useState<IUserEntity>();
   const [isUnlockOrLockModal, setIsUnlockOrLockModal] = useState<boolean>();
   const [isUpdateUserModal, setIsUpdateUserModal] = useState<boolean>(false);
-  const [userUpdate, setUserUpdate] = useState<IUserEntity>();
+  const [userUpdate] = useState<IUserEntity>();
   const [searchForm] = Form.useForm<ISearchUsers>();
 
   const searchinitialValues: ISearchUsers = {
@@ -292,18 +284,18 @@ const AdminUsersPage: FC = () => {
     return false;
   };
 
-  const confirmLockOrUnlockAcount = (item: IUserEntity) => {
-    setUserUnlockOrLock(item);
-    setIsUnlockOrLockModal(true);
-  };
+  // const confirmLockOrUnlockAcount = (item: IUserEntity) => {
+  //   setUserUnlockOrLock(item);
+  //   setIsUnlockOrLockModal(true);
+  // };
 
-  const updateAcount = (item: IUserEntity) => {
-    setIsUpdateUserModal(true);
-    setUserUpdate(item);
-  };
+  // const updateAcount = (item: IUserEntity) => {
+  //   setIsUpdateUserModal(true);
+  //   setUserUpdate(item);
+  // };
 
-  Columns[4] = {
-    width: '170px',
+  Columns[3] = {
+    width: '100px',
     align: 'center',
     render: (item: IUserEntity) => (
       <Space>
@@ -400,7 +392,7 @@ const AdminUsersPage: FC = () => {
   return (
     <React.Fragment>
       <Row justify="center" className="mt">
-        <Col md={24} className="mt">
+        <Col md={23} className="mt">
           <Table
             title={() => (
               <Form
@@ -413,9 +405,6 @@ const AdminUsersPage: FC = () => {
                 <Form.Item name="keyword">
                   <Input allowClear={true} placeholder="Tài khoản" />
                 </Form.Item>
-                {/* <Form.Item name="createAt">
-                  <DatePicker.RangePicker allowClear={true} size="large" placeholder={['Từ ngày', 'Đến ngày']} />
-                </Form.Item> */}
                 <Form.Item>
                   <Button type="primary" htmlType="submit">
                     Tìm kiếm

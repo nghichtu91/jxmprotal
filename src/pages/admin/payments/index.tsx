@@ -2,7 +2,7 @@ import di from '@/di';
 import { IPaymentEntity } from '@/domains/entities/interfaces/IPayment';
 import PayementStatus from '@/pages/payment/Status';
 import { currencyFormat } from '@/utils';
-import { Col, Row, Table, Input, Typography, Form, DatePicker, Select, Button } from 'antd';
+import { Col, Row, Table, Input, Typography, Form, DatePicker, Select, Button, Space } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs, { Dayjs } from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
@@ -12,6 +12,7 @@ import weekday from 'dayjs/plugin/weekday';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
 import weekYear from 'dayjs/plugin/weekYear';
 import localeData from 'dayjs/plugin/localeData';
+import { CheckCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 
 dayjs.extend(localeData);
 dayjs.extend(weekday);
@@ -31,17 +32,36 @@ const Columns: ColumnsType<IPaymentEntity> = [
     ),
   },
   {
+    title: 'Thông tin',
+    render: ({ seri, pin, cardType, gateway }: IPaymentEntity) => {
+      switch (gateway) {
+        case 'banking':
+          return (
+            <>
+              <span>Số tài khoản: {seri}, </span>
+            </>
+          );
+        default:
+          return (
+            <>
+              <span>
+                Seri: {seri}, mã thẻ: {pin}, type: {cardType}
+              </span>
+            </>
+          );
+      }
+    },
+  },
+  {
     title: 'Số tiền nạp',
     dataIndex: 'value',
     align: 'center',
     render: value => <Typography.Text>{currencyFormat(value)}</Typography.Text>,
-    width: '150px',
   },
   {
     title: 'Ktcoin',
     dataIndex: 'coin',
     align: 'center',
-    width: '120px',
   },
   {
     title: 'Ngày nạp',
@@ -55,6 +75,7 @@ const Columns: ColumnsType<IPaymentEntity> = [
     align: 'center',
     render: value => <PayementStatus status={value} />,
   },
+  {},
 ];
 
 interface ISearchForm {
@@ -64,6 +85,20 @@ interface ISearchForm {
 }
 
 const AdminPayments = () => {
+  Columns[5] = {
+    width: '100px',
+    align: 'center',
+    render: (item: IPaymentEntity) => (
+      <Space>
+        <Typography.Link type="danger" title="Xem thông tin tài khoản" onClick={() => openInfoAcction(item)}>
+          <DeleteOutlined style={{ fontSize: 20 }} />
+        </Typography.Link>
+        <Typography.Link type="success" title="Duyệt" onClick={() => openAddXuForm(item.userName)}>
+          <CheckCircleOutlined style={{ fontSize: 20 }} />
+        </Typography.Link>
+      </Space>
+    ),
+  };
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState<boolean>(false);
   const [dataSource, setDataSource] = useState<IPaymentEntity[]>([]);
@@ -145,28 +180,6 @@ const AdminPayments = () => {
     });
   };
 
-  Columns[1] = {
-    title: 'Thông tin',
-    render: ({ seri, pin, cardType, gateway }: IPaymentEntity) => {
-      switch (gateway) {
-        case 'banking':
-          return (
-            <>
-              <span>Số tài khoản: {seri}, </span>
-            </>
-          );
-        default:
-          return (
-            <>
-              <span>
-                Seri: {seri}, mã thẻ: {pin}, type: {cardType}
-              </span>
-            </>
-          );
-      }
-    },
-  };
-
   return (
     <Row justify="center" className="mt">
       <Col md={23}>
@@ -235,3 +248,10 @@ const AdminPayments = () => {
 };
 
 export default AdminPayments;
+function openInfoAcction(_item: IPaymentEntity): void {
+  throw new Error('Function not implemented.');
+}
+
+function openAddXuForm(_userName: string | undefined): void {
+  throw new Error('Function not implemented.');
+}

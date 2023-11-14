@@ -23,7 +23,7 @@ export const SECRET_QUESTIONS = [
 
 export const PHONE_PATTERN = /^(84|0[3|5|7|8|9])[0-9]{8}$/;
 export const CURRENCY = '₫';
-export const CURRENCY_GAME = 'xu';
+export const CURRENCY_GAME = 'Ktcoin';
 
 export enum StatisticActions {
   'PAYMENT_BY_YEAR' = 'paymentbyyear',
