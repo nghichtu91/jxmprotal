@@ -18,7 +18,7 @@ const DashBoardPage: FC = () => {
           <Overview loading={loading} />
         </Col>
         <Col xs={23} sm={23} md={23}>
-          <SalePercent loading={loading} />
+          {/* <SalePercent loading={loading} /> */}
         </Col>
       </Row>
     );

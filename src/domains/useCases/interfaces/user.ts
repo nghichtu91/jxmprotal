@@ -31,6 +31,7 @@ export interface IUserUseCase {
   // admin
   resetAccount<T>(params: T, username: string): Promise<boolean>;
   adminPaymentHistories<T>(params: T, username?: string): Promise<PageData<IPaymentEntity>>;
+  adminPaymentAction<T, V>(paymentId: number, action: string, params?: T): Promise<PageData<V>>;
 }
 
 export interface IUserRepository {
@@ -53,4 +54,5 @@ export interface IUserRepository {
   // admin
   adminActions<T>(params: T, username: string, action: AdminActions): Promise<boolean>;
   adminPaymentHistories<T>(params: T, username?: string): Promise<PageData<IPaymentDTO>>;
+  adminPaymentAction<T, V>(paymentId: number, action: string, params?: T): Promise<PageData<V>>;
 }

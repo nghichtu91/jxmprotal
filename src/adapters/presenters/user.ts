@@ -11,6 +11,9 @@ import { IUserPresenter } from './interfaces/iUser';
 
 class UserPresenter implements IUserPresenter {
   constructor(private readonly userUseCase: IUserUseCase) {}
+  adminPaymentAction<T, V>(paymentId: number, action: string, params?: T | undefined): Promise<PageData<V>> {
+    return this.userUseCase.adminPaymentAction<T, V>(paymentId, action, params);
+  }
 
   adminPaymentHistories<T>(params: T, username: string): Promise<PageData<IPaymentEntity>> {
     return this.userUseCase.adminPaymentHistories<T>(params, username);

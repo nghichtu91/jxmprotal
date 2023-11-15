@@ -16,6 +16,10 @@ import { IUserRepository, IUserUseCase } from './interfaces/user';
 class UserUseCase implements IUserUseCase {
   constructor(private readonly userRepo: IUserRepository) {}
 
+  async adminPaymentAction<T, V>(paymentId: number, action: string, params?: T | undefined) {
+    return await this.userRepo.adminPaymentAction<T, V>(paymentId, action, params);
+  }
+
   async adminPaymentHistories<T>(params: T, username?: string | undefined): Promise<PageData<IPaymentEntity>> {
     const { pageNum, pageSize, total, data } = await this.userRepo.adminPaymentHistories(params, username);
 

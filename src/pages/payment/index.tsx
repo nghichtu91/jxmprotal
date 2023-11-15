@@ -6,7 +6,7 @@ import di from '@/di';
 import { CURRENCY } from '@/constants';
 import { Inner } from '../components';
 
-const cardTypes = ['VIETTEL', 'VINAPHONE', 'MOBIFONE'];
+const cardTypes = ['Mobifone', 'Vinaphone', 'Viettel'];
 
 const PaymentPage: FC = () => {
   const [error, setError] = useState<string>();
@@ -54,29 +54,6 @@ const PaymentPage: FC = () => {
             }
           />
         </Form.Item>
-
-        {/* <Form.Item>
-            <Alert
-              type="info"
-              message={
-                <Typography.Text className="card-payment-warning" aria-setsize={16}>
-                  Thẻ có mệnh giá 20.000₫ của bạn đã được ghi nhận, đợi kiểm tra từ hệ thống.
-                </Typography.Text>
-              }
-            />
-          </Form.Item> */}
-
-        {/* <Form.Item>
-            <Alert
-              type="success"
-              message={
-                <Typography.Text className="card-payment-warning" aria-setsize={16}>
-                  Thẻ của bạn đã được ghi nhận, đợi kiểm tra từ hệ thống.
-                </Typography.Text>
-              }
-            />
-          </Form.Item> */}
-
         <Form
           name="payment-form"
           onFinish={onFinish}
@@ -120,10 +97,6 @@ const PaymentPage: FC = () => {
               suffixIcon={<Form.Item noStyle>{CURRENCY}</Form.Item>}
               placeholder="Mệnh giá của thẻ."
               options={[
-                // {
-                //   label: '10.000-test',
-                //   value: 10000,
-                // },
                 {
                   label: '20.000',
                   value: 20000,

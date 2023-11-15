@@ -2,7 +2,7 @@ import di from '@/di';
 import { IPaymentEntity } from '@/domains/entities/interfaces/IPayment';
 import PayementStatus from '@/pages/payment/Status';
 import { currencyFormat } from '@/utils';
-import { Col, Row, Table, Input, Typography, Form, DatePicker, Select, Button, Space } from 'antd';
+import { Col, Row, Table, Input, Typography, Form, DatePicker, Select, Button, Space, Modal } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs, { Dayjs } from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
@@ -18,6 +18,11 @@ dayjs.extend(localeData);
 dayjs.extend(weekday);
 dayjs.extend(weekOfYear);
 dayjs.extend(weekYear);
+
+enum PaymentAdminActions {
+  ACCEPT = 'accept',
+  REJECT = 'reject',
+}
 
 const Columns: ColumnsType<IPaymentEntity> = [
   {
@@ -62,6 +67,7 @@ const Columns: ColumnsType<IPaymentEntity> = [
     title: 'Ktcoin',
     dataIndex: 'coin',
     align: 'center',
+    render: value => <Typography.Text>{currencyFormat(value)}</Typography.Text>,
   },
   {
     title: 'Ngày nạp',
@@ -85,20 +91,6 @@ interface ISearchForm {
 }
 
 const AdminPayments = () => {
-  Columns[5] = {
-    width: '100px',
-    align: 'center',
-    render: (item: IPaymentEntity) => (
-      <Space>
-        <Typography.Link type="danger" title="Xem thông tin tài khoản" onClick={() => openInfoAcction(item)}>
-          <DeleteOutlined style={{ fontSize: 20 }} />
-        </Typography.Link>
-        <Typography.Link type="success" title="Duyệt" onClick={() => openAddXuForm(item.userName)}>
-          <CheckCircleOutlined style={{ fontSize: 20 }} />
-        </Typography.Link>
-      </Space>
-    ),
-  };
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState<boolean>(false);
   const [dataSource, setDataSource] = useState<IPaymentEntity[]>([]);
@@ -180,6 +172,77 @@ const AdminPayments = () => {
     });
   };
 
+  const actionsPaymentCall = useCallback(
+    async (id: number, action: string, params: object) =>
+      di.user.adminPaymentAction<object, object>(id, action, params),
+    [],
+  );
+
+  const acceptPayment = (item: IPaymentEntity) => {
+    Modal.confirm({
+      title: 'Thông báo',
+      centered: true,
+      content: 'Bạn có chắc duyệt payment này không?',
+      okText: 'Đồng ý',
+      cancelText: 'Hủy',
+      cancelButtonProps: {
+        danger: true,
+      },
+      onOk: async () => {
+        await actionsPaymentCall(Number(item.id), PaymentAdminActions.ACCEPT, {});
+        const keyword = searchParams.get('keyword') as string;
+
+        fetchPayments(paged, keyword || undefined, {
+          form: searchParams.get('form') || '',
+          to: searchParams.get('to') || '',
+          status: defautlStatus,
+        });
+      },
+    });
+  };
+
+  const rejectPayment = (item: IPaymentEntity) => {
+    Modal.confirm({
+      title: 'Thông báo',
+      centered: true,
+      content: 'Bạn có chắc không duyệt payment này?',
+      okText: 'Đồng ý',
+      cancelText: 'Hủy',
+      cancelButtonProps: {
+        danger: true,
+      },
+      onOk: async () => {
+        await actionsPaymentCall(Number(item.id), PaymentAdminActions.REJECT, {});
+        const keyword = searchParams.get('keyword') as string;
+
+        fetchPayments(paged, keyword || undefined, {
+          form: searchParams.get('form') || '',
+          to: searchParams.get('to') || '',
+          status: defautlStatus,
+        });
+      },
+    });
+  };
+
+  Columns[5] = {
+    width: '100px',
+    align: 'center',
+    render: (item: IPaymentEntity) => {
+      if (item.status === 1) return null;
+
+      return (
+        <Space>
+          <Typography.Link type="danger" title="Không duyệt" onClick={() => rejectPayment(item)}>
+            <DeleteOutlined style={{ fontSize: 20 }} />
+          </Typography.Link>
+          <Typography.Link type="success" title="Duyệt" onClick={() => acceptPayment(item)}>
+            <CheckCircleOutlined style={{ fontSize: 20 }} />
+          </Typography.Link>
+        </Space>
+      );
+    },
+  };
+
   return (
     <Row justify="center" className="mt">
       <Col md={23}>
@@ -215,7 +278,7 @@ const AdminPayments = () => {
                 />
               </Form.Item>
               <Form.Item name="createAt">
-                <DatePicker.RangePicker allowClear={true} size="large" placeholder={['Từ ngày', 'Đến ngày']} />
+                <DatePicker.RangePicker allowClear={true} placeholder={['Từ ngày', 'Đến ngày']} />
               </Form.Item>
               <Form.Item>
                 <Button type="primary" htmlType="submit">
@@ -248,10 +311,3 @@ const AdminPayments = () => {
 };
 
 export default AdminPayments;
-function openInfoAcction(_item: IPaymentEntity): void {
-  throw new Error('Function not implemented.');
-}
-
-function openAddXuForm(_userName: string | undefined): void {
-  throw new Error('Function not implemented.');
-}

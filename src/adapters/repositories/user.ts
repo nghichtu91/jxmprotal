@@ -39,6 +39,27 @@ class UserRepository implements IUserRepository {
     this.store = typeof window !== 'undefined' ? localStorage : undefined;
   }
 
+  async adminPaymentAction<T, V>(paymentId: number, action: string, params?: T) {
+    try {
+      const { data } = await this.axiosInstance.post<PageData<V>>(`payments/${paymentId}/${action}`, {
+        params: params,
+      });
+
+      return data;
+    } catch (error) {
+      let errorCode: string | undefined = 'EXCEPTION_ADMIN_GET_PAYMENTS_ERROR';
+
+      if (axios.isAxiosError(error)) {
+        const serverError = error as AxiosError<IBaseResponse>;
+        const responeData = serverError.response?.data;
+
+        errorCode = responeData?.message;
+      }
+
+      throw new Error(errorCode);
+    }
+  }
+
   private hasToken(): boolean {
     const token = this.store && this.store.getItem('NT91_HA_ACCESS_TOKEN');
 

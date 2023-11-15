@@ -29,4 +29,5 @@ export interface IUserPresenter {
   // admin
   resetAccount<T>(params: T, username: string): Promise<boolean>;
   adminPaymentHistories<T>(params: T, username?: string): Promise<PageData<IPaymentEntity>>;
+  adminPaymentAction<T, V>(paymentId: number, action: string, params?: T): Promise<PageData<V>>;
 }
