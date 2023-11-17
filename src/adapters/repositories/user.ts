@@ -10,6 +10,7 @@ import { IUserRepository } from '@/domains/useCases/interfaces/user';
 import { PageParams, PageData, IBaseResponse } from '@/interface';
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import { IHttpClient } from '../infra/axios/interfaces/IHttpClient';
+import { GiftCodeEntity } from '@/domains/entities/giftcode.entity';
 
 /**
  * @class UserRepository
@@ -37,6 +38,64 @@ class UserRepository implements IUserRepository {
   constructor(public httpClient: IHttpClient) {
     this.axiosInstance = httpClient.getInstance();
     this.store = typeof window !== 'undefined' ? localStorage : undefined;
+  }
+  async adminDeleteGiftcodes(id: number): Promise<boolean> {
+    try {
+      await this.axiosInstance.delete<PageData<IUserDto>>(`admin/giftcodes/${id}`);
+
+      return true;
+    } catch (error) {
+      let errorCode: string | undefined = 'EXCEPTION_ADMIN_DELETE_GIFT_CODE_ERROR';
+
+      if (axios.isAxiosError(error)) {
+        const serverError = error as AxiosError<IBaseResponse>;
+        const responeData = serverError.response?.data;
+
+        errorCode = responeData?.message;
+      }
+
+      throw new Error(errorCode);
+    }
+  }
+
+  async adminGiftcodes<T>(params: T): Promise<PageData<GiftCodeEntity>> {
+    try {
+      const { data } = await this.axiosInstance.get<PageData<GiftCodeEntity>>(`admin/giftcodes`, {
+        params: params,
+      });
+
+      return data;
+    } catch (error) {
+      let errorCode: string | undefined = 'EXCEPTION_ADMIN_GET_PAYMENTS_ERROR';
+
+      if (axios.isAxiosError(error)) {
+        const serverError = error as AxiosError<IBaseResponse>;
+        const responeData = serverError.response?.data;
+
+        errorCode = responeData?.message;
+      }
+
+      throw new Error(errorCode);
+    }
+  }
+
+  async adminCreateGiftCode<T, V>(params?: T | undefined): Promise<PageData<V>> {
+    try {
+      const { data } = await this.axiosInstance.post<PageData<V>>(`admin/giftcodes`, params);
+
+      return data;
+    } catch (error) {
+      let errorCode: string | undefined = 'EXCEPTION_ADMIN_GET_PAYMENTS_ERROR';
+
+      if (axios.isAxiosError(error)) {
+        const serverError = error as AxiosError<IBaseResponse>;
+        const responeData = serverError.response?.data;
+
+        errorCode = responeData?.message;
+      }
+
+      throw new Error(errorCode);
+    }
   }
 
   async adminPaymentAction<T, V>(paymentId: number, action: string, params?: T) {

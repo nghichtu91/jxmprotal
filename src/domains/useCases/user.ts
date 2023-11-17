@@ -10,11 +10,21 @@ import { IPaymentEntity } from '../entities/interfaces/IPayment';
 import { PaymentEntity } from '../entities/payment.entity';
 import { UserEntity } from '../entities/user.entity';
 import { IUserRepository, IUserUseCase } from './interfaces/user';
+import { GiftCodeEntity } from '../entities/giftcode.entity';
 /**
  *
  */
 class UserUseCase implements IUserUseCase {
   constructor(private readonly userRepo: IUserRepository) {}
+  adminDeleteGiftcodes(id: number): Promise<boolean> {
+    return this.userRepo.adminDeleteGiftcodes(id);
+  }
+  adminGiftcodes<T>(params: T): Promise<PageData<GiftCodeEntity>> {
+    return this.userRepo.adminGiftcodes<T>(params);
+  }
+  adminCreateGiftCode<T, V>(params?: T | undefined): Promise<PageData<V>> {
+    return this.userRepo.adminCreateGiftCode<T, V>(params);
+  }
 
   async adminPaymentAction<T, V>(paymentId: number, action: string, params?: T | undefined) {
     return await this.userRepo.adminPaymentAction<T, V>(paymentId, action, params);

@@ -4,6 +4,7 @@ import { ICreatePaymentDTO } from '@/domains/dto/payment/create.dto';
 import { ISmsCreateParams } from '@/domains/dto/sms';
 import { IUserCreateDto } from '@/domains/dto/user/create.dto';
 import { ILoginParams } from '@/domains/dto/user/login.dto';
+import { GiftCodeEntity } from '@/domains/entities/giftcode.entity';
 import { IUserEntity } from '@/domains/entities/interfaces';
 import { IPaymentEntity } from '@/domains/entities/interfaces/IPayment';
 import { IBaseResponse, PageData, PageParams } from '@/interface';
@@ -30,4 +31,7 @@ export interface IUserPresenter {
   resetAccount<T>(params: T, username: string): Promise<boolean>;
   adminPaymentHistories<T>(params: T, username?: string): Promise<PageData<IPaymentEntity>>;
   adminPaymentAction<T, V>(paymentId: number, action: string, params?: T): Promise<PageData<V>>;
+  adminCreateGiftCode<T, V>(params?: T): Promise<PageData<V>>;
+  adminGiftcodes<T>(params: T): Promise<PageData<GiftCodeEntity>>;
+  adminDeleteGiftcodes(id: number): Promise<boolean>;
 }

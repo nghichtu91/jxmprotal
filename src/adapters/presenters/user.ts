@@ -8,9 +8,21 @@ import { IPaymentEntity } from '@/domains/entities/interfaces/IPayment';
 import { IUserUseCase } from '@/domains/useCases/interfaces/user';
 import { PageParams, PageData, IBaseResponse } from '@/interface';
 import { IUserPresenter } from './interfaces/iUser';
+import { GiftCodeEntity } from '@/domains/entities/giftcode.entity';
 
 class UserPresenter implements IUserPresenter {
   constructor(private readonly userUseCase: IUserUseCase) {}
+
+  adminDeleteGiftcodes(id: number): Promise<boolean> {
+    return this.userUseCase.adminDeleteGiftcodes(id);
+  }
+
+  adminGiftcodes<T>(params: T): Promise<PageData<GiftCodeEntity>> {
+    return this.userUseCase.adminGiftcodes<T>(params);
+  }
+  adminCreateGiftCode<T, V>(params?: T | undefined): Promise<PageData<V>> {
+    return this.userUseCase.adminCreateGiftCode<T, V>(params);
+  }
   adminPaymentAction<T, V>(paymentId: number, action: string, params?: T | undefined): Promise<PageData<V>> {
     return this.userUseCase.adminPaymentAction<T, V>(paymentId, action, params);
   }

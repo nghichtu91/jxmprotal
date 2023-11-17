@@ -30,6 +30,7 @@ const UnlockEquipmentPage = lazy(
 // admin pages
 const AdminUsersPage = lazy(() => import(/* webpackChunkName: "AdminUsersPage" */ '@/pages/admin/users/list'));
 const AdminPaymentPage = lazy(() => import(/* webpackChunkName: "AdminUsersPage" */ '@/pages/admin/payments'));
+const AdminGiftPage = lazy(() => import(/* webpackChunkName: "AdminGiftPage" */ '@/pages/admin/giftcode'));
 
 const routeList: RouteObject[] = [
   {
@@ -139,6 +140,10 @@ const routeList: RouteObject[] = [
       {
         path: 'payments',
         element: <WrapperRouteComponent element={<AdminPaymentPage />} titleId="" />,
+      },
+      {
+        path: 'giftcodes',
+        element: <WrapperRouteComponent element={<AdminGiftPage />} titleId="" />,
       },
     ],
   },
