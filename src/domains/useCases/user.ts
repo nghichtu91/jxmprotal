@@ -125,8 +125,8 @@ class UserUseCase implements IUserUseCase {
     return this.userRepo.changePassword(params);
   }
 
-  payment(params: ICreatePaymentDTO): Promise<IBaseResponse> {
-    return this.userRepo.payment(params);
+  payment(params: ICreatePaymentDTO, paymenttype: string): Promise<IBaseResponse> {
+    return this.userRepo.payment(params, paymenttype);
   }
 
   async paymentHistories(params: PageParams, userName: string): Promise<PageData<IPaymentEntity>> {

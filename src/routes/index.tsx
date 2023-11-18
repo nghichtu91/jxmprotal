@@ -27,6 +27,7 @@ const UnlockEquipmentPage = lazy(
   () => import(/* webpackChunkName: "UnlockEquipmentPage" */ '@/pages/user/UnlockEquipment'),
 );
 
+const BankingPage = lazy(/* webpackChunkName: "BankingPagePage" */ () => import('@/pages/payment/Banking'));
 // admin pages
 const AdminUsersPage = lazy(() => import(/* webpackChunkName: "AdminUsersPage" */ '@/pages/admin/users/list'));
 const AdminPaymentPage = lazy(() => import(/* webpackChunkName: "AdminUsersPage" */ '@/pages/admin/payments'));
@@ -122,6 +123,10 @@ const routeList: RouteObject[] = [
       {
         path: 'histories',
         element: <WrapperRouteComponent element={<HistoriesPaymentPage />} titleId="" />,
+      },
+      {
+        path: 'banking',
+        element: <WrapperRouteComponent element={<BankingPage />} titleId="" />,
       },
       {
         path: '*',

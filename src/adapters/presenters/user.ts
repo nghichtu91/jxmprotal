@@ -109,8 +109,8 @@ class UserPresenter implements IUserPresenter {
     return this.userUseCase.changePassword(params);
   }
 
-  payment(params: ICreatePaymentDTO): Promise<IBaseResponse> {
-    return this.userUseCase.payment(params);
+  payment(params: ICreatePaymentDTO, paymenttype: string): Promise<IBaseResponse> {
+    return this.userUseCase.payment(params, paymenttype);
   }
 }
 

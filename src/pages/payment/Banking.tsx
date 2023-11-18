@@ -1,28 +1,23 @@
 import { FC, useState } from 'react';
-import { Form, Input, Button, Select, Card, Typography, Alert, notification } from 'antd';
+import { Form, Input, Button, Select, Card, Typography, Alert } from 'antd';
 import './index.less';
 import { ICreatePaymentDTO } from '@/domains/dto/payment/create.dto';
 import di from '@/di';
 import { CURRENCY } from '@/constants';
 import { Inner } from '../components';
 
-const cardTypes = ['Mobifone', 'Vinaphone', 'Viettel'];
-
-const PaymentPage: FC = () => {
+const BankingPage: FC = () => {
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
   const [paymentForm] = Form.useForm<ICreatePaymentDTO>();
+  const [message, setMessage] = useState<string>();
 
   const onFinish = async (value: ICreatePaymentDTO) => {
     try {
-      setError(undefined);
       setLoading(true);
-      const t = await di.user.payment(value, 'mobi');
+      const t = await di.user.payment(value, 'banking');
 
-      notification.success({
-        description: <Typography.Text strong>{t.message}</Typography.Text>,
-        message: 'Thông báo',
-      });
+      setMessage(t.message);
       setLoading(false);
       paymentForm.resetFields();
     } catch (e: unknown) {
@@ -33,27 +28,14 @@ const PaymentPage: FC = () => {
     }
   };
 
+  const onValuesChange = () => {
+    error && setError(undefined);
+    message && setMessage(undefined);
+  };
+
   return (
     <Inner>
-      <Card title="Nạp thẻ" className="card-payment">
-        <Form.Item>
-          <Alert
-            type="warning"
-            message={
-              <Typography.Text className="card-payment-warning" aria-setsize={16}>
-                Bạn phải nhập{' '}
-                <Typography.Text strong type="danger">
-                  đúng mệnh giá thẻ
-                </Typography.Text>
-                , nếu sai mệnh giá bạn sẽ{' '}
-                <Typography.Text strong type="danger">
-                  không nhận được xu
-                </Typography.Text>
-                .
-              </Typography.Text>
-            }
-          />
-        </Form.Item>
+      <Card title="Nạp qua ngân hàng" className="card-payment">
         <Form
           name="payment-form"
           onFinish={onFinish}
@@ -62,25 +44,19 @@ const PaymentPage: FC = () => {
           size="large"
           className="payment-form"
           form={paymentForm}
+          onValuesChange={onValuesChange}
         >
-          <Form.Item
-            label="Loại thẻ"
-            name="cardType"
-            rules={[
-              {
-                required: true,
-                message: 'Vui lòng chọn nhà mạng.',
-              },
-            ]}
-          >
-            <Select
-              placeholder="Chọn loại thẻ"
-              options={cardTypes.map(v => {
-                return {
-                  label: v,
-                  value: v,
-                };
-              })}
+          <Form.Item>
+            <Alert
+              type="warning"
+              message={
+                <Typography.Text className="card-payment-warning" aria-setsize={16}>
+                  Bạn phải tạo lệnh{' '}
+                  <Typography.Text strong type="danger">
+                    trước khi chuyển tiền.
+                  </Typography.Text>
+                </Typography.Text>
+              }
             />
           </Form.Item>
           <Form.Item
@@ -133,52 +109,38 @@ const PaymentPage: FC = () => {
             />
           </Form.Item>
           <Form.Item
-            label="Số thẻ"
+            label="Tên chủ thẻ"
             name="cardSeri"
             rules={[
               {
                 required: true,
-                message: 'Vui lòng nhập số thẻ.',
+                message: 'Vui lòng nhập tên chủ thẻ.',
               },
               {
-                pattern: /^[0-9a-zA-Z]+$/,
-                message: 'Chỉ được nhập vào số hoặc chữ.',
-              },
-              {
-                max: 15,
-                message: 'Nhập tối đa 15 ký tự.',
+                max: 30,
+                message: 'Nhập tối đa 30 ký tự.',
               },
             ]}
           >
             <Input placeholder="Nhập số thẻ" />
           </Form.Item>
-
-          <Form.Item
-            label="Mã thẻ"
-            name="cardPin"
-            rules={[
-              {
-                required: true,
-                message: 'Vui lòng nhập mã thẻ.',
-              },
-              {
-                pattern: /^[0-9a-zA-Z]+$/,
-                message: 'Chỉ được nhập vào số hoặc chữ.',
-              },
-              {
-                max: 15,
-                message: 'Nhập tối đa 15 ký tự.',
-              },
-            ]}
-          >
-            <Input placeholder="Nhập mã thẻ" />
-          </Form.Item>
           <Form.Item hidden={!error}>
             <Form.ErrorList helpStatus="error" errors={[<Typography.Text type="danger">{[error]}</Typography.Text>]} />
           </Form.Item>
+          <Form.Item hidden={!message}>
+            <Form.ErrorList
+              helpStatus="success"
+              errors={[
+                <Typography.Text style={{ fontSize: 17 }} strong type="danger">
+                  {[message]}
+                </Typography.Text>,
+              ]}
+            />
+          </Form.Item>
+
           <Form.Item noStyle>
             <Button loading={loading} type="primary" htmlType="submit" className="payment-form-button">
-              Nạp thẻ
+              Ghi lệnh
             </Button>
           </Form.Item>
         </Form>
@@ -187,4 +149,4 @@ const PaymentPage: FC = () => {
   );
 };
 
-export default PaymentPage;
+export default BankingPage;

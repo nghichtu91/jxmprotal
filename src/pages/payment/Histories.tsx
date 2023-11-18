@@ -10,11 +10,6 @@ import { currencyFormat } from '@/utils';
 
 const Columns: ColumnsType<IPaymentEntity> = [
   {
-    title: 'Id',
-    dataIndex: 'id',
-    align: 'center',
-  },
-  {
     title: 'Seri',
     dataIndex: 'seri',
     align: 'center',
@@ -30,26 +25,13 @@ const Columns: ColumnsType<IPaymentEntity> = [
     align: 'center',
   },
   {
-    title: 'Hình thức',
-    dataIndex: 'gateway',
-    align: 'center',
-    render: value => {
-      switch (value) {
-        case 'atm':
-          return <Typography.Text strong>Ngân hàng</Typography.Text>;
-        default:
-          return <Typography.Text strong>Thẻ cào</Typography.Text>;
-      }
-    },
-  },
-  {
     title: 'Số tiền nạp',
     dataIndex: 'value',
     align: 'center',
     render: value => <Typography.Text>{currencyFormat(value)}</Typography.Text>,
   },
   {
-    title: 'Xu nhận được',
+    title: 'Ktcoin nhận được',
     dataIndex: 'coin',
     align: 'center',
   },
@@ -110,7 +92,6 @@ const HistoriesPage: FC = () => {
             position: ['bottomCenter'],
             pageSize: 12,
             total: total,
-            size: 'default',
             current: paged,
             onChange: tableOnChange,
           }}

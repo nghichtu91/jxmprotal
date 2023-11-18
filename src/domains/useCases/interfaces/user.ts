@@ -16,7 +16,7 @@ export interface IUserUseCase {
   login(params: ILoginParams): Promise<boolean>;
   logout(): Promise<boolean>;
   changePassword(params: any): Promise<boolean>;
-  payment(params: ICreatePaymentDTO): Promise<IBaseResponse>;
+  payment(params: ICreatePaymentDTO, paymenttype: string): Promise<IBaseResponse>;
   me(): Promise<IUserEntity>;
   updateInfo(params: IUserUpdateDTO, username: string): Promise<boolean>;
   paymentHistories(params: PageParams, userName: string): Promise<PageData<IPaymentEntity>>;
@@ -43,7 +43,7 @@ export interface IUserRepository {
   login(params: ILoginParams): Promise<boolean>;
   logout(): Promise<boolean>;
   changePassword(params: any): Promise<boolean>;
-  payment(params: ICreatePaymentDTO): Promise<IBaseResponse>;
+  payment(params: ICreatePaymentDTO, paymenttype: string): Promise<IBaseResponse>;
   me(): Promise<IUserDto>;
   updateInfo(params: IUserUpdateDTO, username: string): Promise<boolean>;
   paymentHistories(params: PageParams, userName: string): Promise<PageData<IPaymentDTO>>;

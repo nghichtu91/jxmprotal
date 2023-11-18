@@ -473,9 +473,9 @@ class UserRepository implements IUserRepository {
     throw new Error('Method not implemented.');
   }
 
-  async payment(params: ICreatePaymentDTO): Promise<IBaseResponse> {
+  async payment(params: ICreatePaymentDTO, paymenttype = 'mobi'): Promise<IBaseResponse> {
     try {
-      const { data } = await this.axiosInstance.post<IBaseResponse>('payments/gateway/mobi', params);
+      const { data } = await this.axiosInstance.post<IBaseResponse>(`payments/gateway/${paymenttype}`, params);
 
       return data;
     } catch (error) {

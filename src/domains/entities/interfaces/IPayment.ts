@@ -11,6 +11,7 @@ export interface IPaymentEntity {
   declared_value?: number;
   userName?: string;
   createdAt?: string;
+  method?: string;
 }
 
 export interface IPaymentData {
@@ -28,4 +29,5 @@ export interface IPaymentData {
   transactionCode?: string;
   comment?: string;
   createdAt?: string;
+  method?: string;
 }
