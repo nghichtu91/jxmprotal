@@ -2,7 +2,7 @@ import di from '@/di';
 import { IPaymentEntity } from '@/domains/entities/interfaces/IPayment';
 import PayementStatus from '@/pages/payment/Status';
 import { currencyFormat } from '@/utils';
-import { Col, Row, Table, Input, Typography, Form, DatePicker, Select, Button, Space, Modal } from 'antd';
+import { Col, Row, Table, Input, Typography, Form, DatePicker, Select, Button, Space, Modal, notification } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs, { Dayjs } from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
@@ -97,7 +97,7 @@ const AdminPayments = () => {
   const defaultPaged = (searchParams.get('paged') as unknown as string) || '1';
   const [paged, setPaged] = useState<number>(parseInt(defaultPaged));
   const [total, setTotal] = useState<number>(0);
-  const defautlStatus = searchParams.get('status') ? parseInt(searchParams.get('status') || '') : 0;
+  const defautlStatus = searchParams.get('status') ? parseInt(searchParams.get('status') || '') : undefined;
 
   const initialValues: ISearchForm = {
     keyword: searchParams.get('keyword') || undefined,
@@ -178,6 +178,29 @@ const AdminPayments = () => {
     [],
   );
 
+  const onAcceptPayment = async (item: IPaymentEntity) => {
+    try {
+      await actionsPaymentCall(Number(item.id), PaymentAdminActions.ACCEPT, {});
+      const keyword = searchParams.get('keyword') as string;
+
+      notification.success({
+        message: 'Thông báo',
+        description: `Đã duyệt payment ${item.id} thành công. `,
+      });
+
+      fetchPayments(paged, keyword || undefined, {
+        form: searchParams.get('form') || '',
+        to: searchParams.get('to') || '',
+        status: defautlStatus,
+      });
+    } catch (ex: unknown) {
+      notification.error({
+        message: 'Thông báo',
+        description: `Có lỗi từ hệ thống.`,
+      });
+    }
+  };
+
   const acceptPayment = (item: IPaymentEntity) => {
     Modal.confirm({
       title: 'Thông báo',
@@ -188,17 +211,31 @@ const AdminPayments = () => {
       cancelButtonProps: {
         danger: true,
       },
-      onOk: async () => {
-        await actionsPaymentCall(Number(item.id), PaymentAdminActions.ACCEPT, {});
-        const keyword = searchParams.get('keyword') as string;
-
-        fetchPayments(paged, keyword || undefined, {
-          form: searchParams.get('form') || '',
-          to: searchParams.get('to') || '',
-          status: defautlStatus,
-        });
-      },
+      onOk: () => onAcceptPayment(item),
     });
+  };
+
+  const onRejectpayment = async (item: IPaymentEntity) => {
+    try {
+      await actionsPaymentCall(Number(item.id), PaymentAdminActions.REJECT, {});
+      const keyword = searchParams.get('keyword') as string;
+
+      notification.warning({
+        message: 'Thông báo',
+        description: `Đã từ chối payment ${item.id}.`,
+      });
+
+      fetchPayments(paged, keyword || undefined, {
+        form: searchParams.get('form') || '',
+        to: searchParams.get('to') || '',
+        status: defautlStatus,
+      });
+    } catch (ex) {
+      notification.error({
+        message: 'Thông báo',
+        description: `Có lỗi từ hệ thống.`,
+      });
+    }
   };
 
   const rejectPayment = (item: IPaymentEntity) => {
@@ -211,16 +248,7 @@ const AdminPayments = () => {
       cancelButtonProps: {
         danger: true,
       },
-      onOk: async () => {
-        await actionsPaymentCall(Number(item.id), PaymentAdminActions.REJECT, {});
-        const keyword = searchParams.get('keyword') as string;
-
-        fetchPayments(paged, keyword || undefined, {
-          form: searchParams.get('form') || '',
-          to: searchParams.get('to') || '',
-          status: defautlStatus,
-        });
-      },
+      onOk: () => onRejectpayment(item),
     });
   };
 
@@ -297,7 +325,7 @@ const AdminPayments = () => {
           bordered
           pagination={{
             position: ['bottomCenter'],
-            pageSize: 12,
+            pageSize: 25,
             total: total,
             size: 'default',
             current: paged,
